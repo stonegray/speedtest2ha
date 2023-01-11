@@ -121,6 +121,8 @@ export async function speedtest(server, exclude, useSingleMode) {
     // Temporary hack until I decide where to put this logic:
     result.download = ~~(result.download / 1e4) / 1e2;
     result.upload = ~~(result.upload / 1e4) / 1e2;
+    result.bytes_recieved = ~~(result.bytes_recieved / 1e4) / 1e2;
+    result.bytes_sent = ~~(result.bytes_sent / 1e4) / 1e2;
 
     // Else we should be fine:
     return {

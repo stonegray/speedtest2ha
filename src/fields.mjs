@@ -40,7 +40,7 @@ export const entities = [
             name: "Ping Time",
             state_topic: mqttPath + "/ping",
             device_class: "duration",
-            unit_of_measurement: "seconds",
+            unit_of_measurement: "milliseconds",
             unique_id: uidPrefix + "ping",
         },
         backendKey: "ping"
@@ -60,23 +60,31 @@ export const entities = [
         backendKey: "jitter"
     },
     {
-        component: "text",
-        name: "status",
+        component: "sensor",
+        name: "uploadtotal",
         homeassistantInfo: {
-            name: "Status",
-            state_topic: mqttPath + "/status",
-            unique_id: uidPrefix + "status",
+            name: "Upload Bandwidth",
+            entity_category: "diagnostic",
+            state_topic: mqttPath + "/uploadtotal",
+            device_class: "data_size",
+            unit_of_measurement: "Mbit",
+            unique_id: uidPrefix + "uploadtotal",
+            enabled_by_default: true
         },
-        backendKey: "status"
+        backendKey: "upstream"
     },
     {
-        component: "text",
-        name: "server",
+        component: "sensor",
+        name: "downloadtotal",
         homeassistantInfo: {
-            name: "Speedtest Server",
-            state_topic: mqttPath + "/server",
-            unique_id: uidPrefix + "server",
+            name: "Download Bandwidth",
+            entity_category: "diagnostic",
+            state_topic: mqttPath + "/downloadtotal",
+            device_class: "data_size",
+            unit_of_measurement: "Mbit",
+            unique_id: uidPrefix + "downloadtotal",
+            enabled_by_default: true
         },
-        backendKey: "server_id"
+        backendKey: "downstream"
     },
 ]
