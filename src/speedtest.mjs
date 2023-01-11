@@ -5,9 +5,9 @@ import * as cron from 'node-cron';
 
 // Store total bandwidth:
 const counters = {
-    uploadtotal: 1,
-    downloadtotal: 1,
-    total: 1
+    uploadtotal: 0,
+    downloadtotal: 0,
+    total: 0
 }
 
 
@@ -40,7 +40,6 @@ cron.schedule(process.env.CRON ?? '* */1 * * *', async () => {
     await runTest();
 });
 
-// Default monthly:
 cron.schedule(process.env.COUNTER_RESET ?? '0 0 29 2 1', async () => {
     counters.downloadtotal = 0;
     counters.uploadtotal = 0;
