@@ -1,10 +1,8 @@
-export const mqttPath = "speedtest/speedtester"
-export const announceRoot = "homeassistant"
+export const mqttPath = process.env.MQTT_TOPIC ?? "speedtest"
+export const announceRoot = process.env.HA_ANNOUNCE ?? "homeassistant"
 export const identifier = "speedtester"
 
 const uidPrefix = "sp0"
-
-/*Entity sensor.ping_time (<class 'homeassistant.components.mqtt.sensor.MqttSensor'>) is using native unit of measurement 'milliseconds' which is not a valid unit for the device class ('duration') it is using; Please update your configuration if your entity is manually configured, otherwise create a bug report at https://github.com/home-assistant/core/issues?q=is%3Aopen+is%3Aissue+label%3A%22integration%3A+mqtt%22 */
 
 // Master list of different sensors and how to get the data:
 export const entities = [

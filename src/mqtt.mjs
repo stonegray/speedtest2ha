@@ -6,13 +6,16 @@ import { entities, mqttPath, announceRoot, identifier } from './fields.mjs';
 const options = {
     username: process.env.MQTT_USER,
     password: process.env.MQTT_PASS,
+    clientId: process.env.MQTT_CLIENT_ID,
+    protocolVersion: process.env.MQTT_USE_V5 ? 5 : 4
+
 }
 
 const client = mqtt.connect(process.env.MQTT_HOST ?? 'mqtt://localhost', options)
 
 export const announce_template = {
     platform: "mqtt",
-    expire_after: 11 * 60,
+    expire_after: 66 * 60,
 
     availability_topic: "speedtest/availability",
     availability_mode: "any",
@@ -20,7 +23,7 @@ export const announce_template = {
 
     device: {
         identifiers: identifier,
-        name: "Speedtest Connector",
+        name: process.env.HA_ANNOUNCE_NAME ?? "Speedtest Connector",
         model: "v1.1",
         manufacturer: "git.io/stonegray",
         identifiers: [

@@ -3,5 +3,23 @@
     "async-mqtt": "^2.6.3",
     "mqtt": "^4.3.7",
     "node-cron": "^3.0.2"
-  }
+  },
+  "name": "speedtest2ha",
+  "description": "Speedtest results in Home Assistant via MQTT.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stonegray/speedtest2ha.git"
+  },
+  "author": "stonegray",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/stonegray/speedtest2ha/issues"
+  },
+  "homepage": "https://github.com/stonegray/speedtest2ha#readme"
 }
