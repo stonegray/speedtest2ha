@@ -1,8 +1,9 @@
-export const mqttPath = process.env.MQTT_TOPIC ?? "speedtest"
-export const announceRoot = process.env.HA_ANNOUNCE ?? "homeassistant"
-export const identifier = "speedtester"
 
 const uidPrefix = "sp0"
+
+export const announceRoot = process.env.HA_ANNOUNCE ?? "homeassistant"
+export const identifier = "speedtester"
+export const mqttPath = process.env.MQTT_TOPIC ?? "speedtest"
 
 // Master list of different sensors and how to get the data:
 export const entities = [
@@ -40,7 +41,7 @@ export const entities = [
             name: "Ping Time",
             state_topic: mqttPath + "/ping",
             device_class: "duration",
-            unit_of_measurement: "seconds",
+            unit_of_measurement: "milliseconds",
             unique_id: uidPrefix + "ping",
         },
         backendKey: "ping"
@@ -52,7 +53,7 @@ export const entities = [
             name: "Jitter Time",
             state_topic: mqttPath + "/jitter",
             device_class: "duration",
-            unit_of_measurement: "milliseconds",
+            unit_of_measurement: "seconds",
             unique_id: uidPrefix + "jitter",
             // Not all backends support this:
             enabled_by_default: false
@@ -60,23 +61,73 @@ export const entities = [
         backendKey: "jitter"
     },
     {
-        component: "text",
-        name: "status",
+        component: "sensor",
+        name: "uploadtotal",
         homeassistantInfo: {
-            name: "Status",
-            state_topic: mqttPath + "/status",
-            unique_id: uidPrefix + "status",
+            name: "Upload Bandwidth",
+            entity_category: "diagnostic",
+            state_topic: mqttPath + "/uploadtotal",
+            device_class: "data_size",
+            unit_of_measurement: "Mbit",
+            unique_id: uidPrefix + "uploadtotal",
+            enabled_by_default: true
         },
-        backendKey: "status"
+        backendKey: "upstream"
     },
     {
-        component: "text",
-        name: "server",
+        component: "sensor",
+        name: "downloadtotal",
         homeassistantInfo: {
-            name: "Speedtest Server",
-            state_topic: mqttPath + "/server",
-            unique_id: uidPrefix + "server",
+            name: "Download Bandwidth",
+            entity_category: "diagnostic",
+            state_topic: mqttPath + "/downloadtotal",
+            device_class: "data_size",
+            unit_of_measurement: "Mbit",
+            unique_id: uidPrefix + "downloadtotal",
+            enabled_by_default: true
         },
-        backendKey: "server_id"
+        backendKey: "downstream"
+    },
+    {
+        component: "binary_sensor",
+        name: "testinprogress",
+        homeassistantInfo: {
+            name: "Test In Progress",
+            state_topic: mqttPath + "/testinprogress",
+            device_class: "running",
+            unique_id: uidPrefix + "testinprogress",
+            payload_on: "true",
+            payload_off: "false"
+        },
+        backendKey: "testinprogress"
+    },
+    {
+        component: "button",
+        name: "runtest",
+        homeassistantInfo: {
+            name: "Manual Update",
+            state_topic: mqttPath + "/runtest",
+            command_topic: mqttPath + "/runtest/set",
+            device_class: "restart",
+            unique_id: uidPrefix + "runtest",
+            payload_on: "true",
+            payload_off: "false"
+        },
+        backendKey: "runtest"
+    },
+    {
+        component: "switch",
+        name: "schedule",
+        homeassistantInfo: {
+            name: "Scheduled Updates",
+            state_topic: mqttPath + "/schedule",
+            command_topic: mqttPath + "/schedule/set",
+            device_class: "switch",
+            unique_id: uidPrefix + "schedule",
+            payload_on: "true",
+            payload_off: "false",
+            enabled_by_default: false
+        },
+        backendKey: "schedule"
     },
 ]
