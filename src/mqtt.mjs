@@ -76,6 +76,6 @@ client.on('connect', async function () {
 
     setInterval(async () => {
         await client.publish(announce_template.availability_topic, "online");
-    }, 10000);
+    }, 1e3 * (process.env.AVAILABILITY_UPDATE_RATE ?? 360));
 
 })

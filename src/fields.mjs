@@ -1,8 +1,9 @@
-export const mqttPath = process.env.MQTT_TOPIC ?? "speedtest"
-export const announceRoot = process.env.HA_ANNOUNCE ?? "homeassistant"
-export const identifier = "speedtester"
 
 const uidPrefix = "sp0"
+
+export const announceRoot = process.env.HA_ANNOUNCE ?? "homeassistant"
+export const identifier = "speedtester"
+export const mqttPath = process.env.MQTT_TOPIC ?? "speedtest"
 
 // Master list of different sensors and how to get the data:
 export const entities = [
@@ -52,7 +53,7 @@ export const entities = [
             name: "Jitter Time",
             state_topic: mqttPath + "/jitter",
             device_class: "duration",
-            unit_of_measurement: "milliseconds",
+            unit_of_measurement: "seconds",
             unique_id: uidPrefix + "jitter",
             // Not all backends support this:
             enabled_by_default: false
@@ -86,5 +87,47 @@ export const entities = [
             enabled_by_default: true
         },
         backendKey: "downstream"
+    },
+    {
+        component: "binary_sensor",
+        name: "testinprogress",
+        homeassistantInfo: {
+            name: "Test In Progress",
+            state_topic: mqttPath + "/testinprogress",
+            device_class: "running",
+            unique_id: uidPrefix + "testinprogress",
+            payload_on: "true",
+            payload_off: "false"
+        },
+        backendKey: "testinprogress"
+    },
+    {
+        component: "button",
+        name: "runtest",
+        homeassistantInfo: {
+            name: "Manual Update",
+            state_topic: mqttPath + "/runtest",
+            command_topic: mqttPath + "/runtest/set",
+            device_class: "restart",
+            unique_id: uidPrefix + "runtest",
+            payload_on: "true",
+            payload_off: "false"
+        },
+        backendKey: "runtest"
+    },
+    {
+        component: "switch",
+        name: "schedule",
+        homeassistantInfo: {
+            name: "Scheduled Updates",
+            state_topic: mqttPath + "/schedule",
+            command_topic: mqttPath + "/schedule/set",
+            device_class: "switch",
+            unique_id: uidPrefix + "schedule",
+            payload_on: "true",
+            payload_off: "false",
+            enabled_by_default: false
+        },
+        backendKey: "schedule"
     },
 ]
