@@ -8,10 +8,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: Klemensas/action-autotag@stable
-        continue-on-error: true
-        with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Prepare
         id: prep
         run: |
@@ -61,3 +57,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - uses: meeDamian/sync-readme@v1.0.6
+        with:
+          pass: ${{ secrets.DOCKER_PASSWORD }}
+          description: true
