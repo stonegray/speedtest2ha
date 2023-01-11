@@ -1,9 +1,11 @@
 # speedtest2ha
 Speedtest results in Home Assistant via MQTT.
 
-Supports Autodiscovery, no configuration is required in Home Assistant.
+Supports Autodiscovery, no configuration is required in Home Assistant. 
 
-
+<p align="center">
+<img src="https://github.com/stonegray/speedtest2ha/blob/main/.github/images/screenshot.png?raw=true" width="75%">
+</p>
 ## Installation:
 
 Using `docker-compose.yml`:
