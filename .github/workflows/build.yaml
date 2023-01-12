@@ -9,7 +9,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - uses: Klemensas/action-autotag@stable
-        if: github.ref == 'refs/heads/main'
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Prepare
