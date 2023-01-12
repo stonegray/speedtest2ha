@@ -1,8 +1,6 @@
 # speedtest2ha
 
 ![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/stonegray/speedtest2ha/build.yaml?branch=main) ![GitHub](https://img.shields.io/github/license/stonegray/speedtest2ha) ![Docker Pulls](https://img.shields.io/docker/pulls/stonegray/speedtest2ha) ![](https://img.shields.io/badge/arch-arm64%20%7C%20amd64-blue) ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/stonegray/speedtest2ha)
- 
-Speedtest results in Home Assistant via MQTT.
 
 Supports Autodiscovery, no configuration is required in Home Assistant. 
 
@@ -49,6 +47,17 @@ Settings you probably don't need to change:
 - `TRAFFIC_COUNTER_RESET`: Cron syntax to reset the bandwidth counters. Defaults to approximately never (0 0 29 2 1). This may be useful to reset monthly to determine impact of speedtesting on your traffic allowances, eg `TRAFFIC_COUNTER_RESET="0 0 1 * *"`
 - `AVAILABILITY_UPDATE_RATE`: Number of seconds to wait between availability updates. Default 3600.
 - `NO_TEST_ON_BOOT`: Disable testing on boot and only use the cron scheduled tests. This will show "Unavailable" in home assistant until data updates, but may prevent unexpected timing after updates.
+
+## Running without Dockers
+
+It's strongly recommended to use Docker. To run without, just set the required
+enviroment variables and run `src/speedtest.mjs`:
+
+```bash
+MQTT_HOST=mqtt://10.0.0.10 node src/speedtest.mjs
+```
+
+You may wish to daemonize this using PM2 or similar software. 
 
 ## Topics
 

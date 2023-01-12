@@ -13,6 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - uses: butlerlogic/action-autotag@master
+        if: github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
@@ -43,6 +44,7 @@ jobs:
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
       # https://github.com/docker/setup-qemu-action
       - name: Create a Release
+        if: github.ref == 'refs/heads/main'
         uses: elgohr/Github-Release-Action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -64,15 +66,6 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: stonegray/speedtest2ha 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          push: false
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
       - name: Build and push Docker image
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v2
