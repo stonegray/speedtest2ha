@@ -11,6 +11,8 @@ jobs:
       - uses: butlerlogic/action-autotag@stable
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          strategy: package
       - name: Prepare
         id: prep
         run: |
