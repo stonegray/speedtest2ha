@@ -37,6 +37,7 @@ Settings you probably don't need to change:
 <!--- `PERIOD`: Ignored if `CRON` is set. Number of seconds between tests. Must be greater than 300.-->
 <!--- `MQTT_NO_LAST_WILL`: Disable MQTT last will.-->
 - `CRON`: Defaults to "0 0,6,12,18 * * *". This updates four times per day.
+- `SPEEDTEST_BACKEND_FAST`: Use the experimental Fast.com API. Currently does not report upload speed.
 - `SPEEDTEST_SERVER_ID`: Defaults to automatic. Set to the integer server ID (eg. 12345) to skip server selection and force connecting so a specific ID.
 - `SPEEDTEST_SERVER_EXCLUDE`: Defaults to none. Set to an integer server ID to ignore this server during selection. 
 - `SPEEDTEST_SINGLE_MODE`: Use a single thread; may measure actual file transfer performance from a single host better. Equilvilent to `--single` on `speedtest-cli`
