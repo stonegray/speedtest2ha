@@ -1,17 +1,22 @@
 name: Build
 
 # Controls when the workflow will run
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - dev
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: Klemensas/action-autotag@stable
-        if: github.ref == 'refs/heads/main'
-        with:
+      - uses: butlerlogic/action-autotag@master
+        env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          strategy: package
       - name: Prepare
         id: prep
         run: |
@@ -33,9 +38,16 @@ jobs:
           fi
 
           # Set output parameters.
-          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=tags::${tags}
+          echo ::set-output name=versionStr::${VERSION}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
       # https://github.com/docker/setup-qemu-action
+      - name: Create a Release
+        uses: elgohr/Github-Release-Action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          title: "Release"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       # https://github.com/docker/setup-buildx-action
@@ -53,15 +65,6 @@ jobs:
         with:
           images: stonegray/speedtest2ha 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          push: false
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      - name: Build and push Docker image
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v2
         with:
@@ -69,7 +72,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }},${{ steps.prep.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - uses: meeDamian/sync-readme@v1.0.6
         if: github.ref == 'refs/heads/main'
