@@ -35,7 +35,7 @@ jobs:
 
           # Set output parameters.
           echo ::set-output name=tags::${tags}
-          echo ::set-output name=versionStr::{VERSION}
+          echo ::set-output name=versionStr::${VERSION}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
       # https://github.com/docker/setup-qemu-action
       - name: Create a Release
