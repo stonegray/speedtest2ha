@@ -34,9 +34,16 @@ jobs:
           fi
 
           # Set output parameters.
-          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=tags::${tags}
+          echo ::set-output name=versionStr::{VERSION}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
       # https://github.com/docker/setup-qemu-action
+      - name: Create a Release
+        uses: elgohr/Github-Release-Action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          title: ${{ steps.prep.output.versionStr}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       # https://github.com/docker/setup-buildx-action
