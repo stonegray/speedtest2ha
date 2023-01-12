@@ -1,5 +1,6 @@
 # speedtest2ha
-Speedtest results in Home Assistant via MQTT, packaged in a Docker Container.
+
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/stonegray/speedtest2ha/build.yaml?branch=main) ![GitHub](https://img.shields.io/github/license/stonegray/speedtest2ha) ![Docker Pulls](https://img.shields.io/docker/pulls/stonegray/speedtest2ha) ![](https://img.shields.io/badge/arch-arm64%20%7C%20amd64-blue) ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/stonegray/speedtest2ha)
 
 Supports Autodiscovery, no configuration is required in Home Assistant. 
 
