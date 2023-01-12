@@ -53,11 +53,10 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          push: true
+          push: false
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - uses: meeDamian/sync-readme@v1.0.6
-        with:
-          pass: ${{ secrets.DOCKER_PASSWORD }}
-          description: true
+      - name: Publish if main
+        if: github.ref == 'refs/heads/main'
+        uses: stonegray/speedtest2ha/.github/workflows/publish.yaml@main
