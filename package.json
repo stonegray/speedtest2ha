@@ -6,7 +6,7 @@
   },
   "name": "speedtest2ha",
   "description": "Speedtest results in Home Assistant via MQTT.",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
