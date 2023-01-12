@@ -13,6 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - uses: butlerlogic/action-autotag@master
+        if: github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
