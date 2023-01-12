@@ -3,6 +3,7 @@ import * as cron from 'node-cron';
 import { entities, mqttPath } from "./fields.mjs";
 import { sendFields } from "./mqtt.mjs";
 import { speedtest } from "./backendSpeedtest.mjs";
+import { speedtestFast } from './backendFast.mjs';
 
 // Store total bandwidth:
 const counters = {
@@ -17,11 +18,17 @@ async function runTest() {
     // Get all the info from the testing backend:
 
     sendFields({ testinprogress: "true" });
-    const results = await speedtest(
-        process.env.SPEEDTEST_SERVER_ID,
-        process.env.SPEEDTEST_EXCLUDE_ID,
-        process.env.SPEEDTEST_SINGLE_MODE
-    );
+
+    let results;
+    if (process.env.SPEEDTEST_BACKEND_FAST) {
+        results = await speedtestFast();
+    } else {
+        results = await speedtest(
+            process.env.SPEEDTEST_SERVER_ID,
+            process.env.SPEEDTEST_EXCLUDE_ID,
+            process.env.SPEEDTEST_SINGLE_MODE
+        );
+    }
     sendFields({ testinprogress: "false" });
 
     console.log("Sending data...")
