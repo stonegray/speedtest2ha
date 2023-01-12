@@ -8,6 +8,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: Klemensas/action-autotag@stable
+        if: github.ref == 'refs/heads/main'
+        with:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Prepare
         id: prep
         run: |
@@ -53,11 +57,22 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
+          push: false
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push Docker image
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - uses: meeDamian/sync-readme@v1.0.6
+        if: github.ref == 'refs/heads/main'
         with:
           pass: ${{ secrets.DOCKER_PASSWORD }}
           description: true
