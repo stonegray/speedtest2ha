@@ -70,7 +70,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }},${{ steps.prep.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - uses: meeDamian/sync-readme@v1.0.6
         if: github.ref == 'refs/heads/main'
