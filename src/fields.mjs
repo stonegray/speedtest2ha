@@ -72,7 +72,7 @@ export const entities = [
             unique_id: uidPrefix + "uploadtotal",
             enabled_by_default: true
         },
-        backendKey: "upstream"
+        backendKey: "uploadtotal"
     },
     {
         component: "sensor",
@@ -86,7 +86,7 @@ export const entities = [
             unique_id: uidPrefix + "downloadtotal",
             enabled_by_default: true
         },
-        backendKey: "downstream"
+        backendKey: "downloadtotal"
     },
     {
         component: "binary_sensor",
