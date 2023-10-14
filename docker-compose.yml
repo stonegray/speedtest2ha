@@ -1,0 +1,16 @@
+services:
+  speedtest:
+    build:
+      dockerfile: Dockerfile
+    container_name: speedtest232i
+    environment:
+      - MQTT_HOST=mqtt://mosquitto
+    restart: unless-stopped
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    volumes:
+      - ./test/:/mosquitto/config/
+    ports:
+      - 1883:1883
+      - 9001:9001

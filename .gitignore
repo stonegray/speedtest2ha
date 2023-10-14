@@ -1,2 +1,4 @@
 node_modules
 .DS_Store
+test/data
+test/log

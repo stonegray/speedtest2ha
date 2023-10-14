@@ -1,7 +1,7 @@
 import * as cron from 'node-cron';
 
 import { entities, mqttPath } from "./fields.mjs";
-import { sendFields } from "./mqtt.mjs";
+import { sendFields, connect } from "./mqtt.mjs";
 import { speedtest } from "./backendSpeedtest.mjs";
 import { speedtestFast } from './backendFast.mjs';
 
@@ -12,12 +12,29 @@ const counters = {
     total: 0
 }
 
+let attempt = 1;
+const t = setInterval(()=>{
+	console.log("Waiting for connection...");
+
+	if (attempt++ == 6){
+		console.error("Failed to connect to MQTT after 60 seconds, exiting");
+		console.error("If this issue persists, check your MQTT credentials");
+		process.exit(3);
+	}
+}, 10000);
+
+console.log("Connecting to MQTT... ");
+await connect();
+
+console.log("Connect OK...");
+clearInterval(t);
+
 async function runTest() {
 
     console.log("Starting test...");
     // Get all the info from the testing backend:
 
-    sendFields({ testinprogress: "true" });
+    sendFields({ testinprogress: "true" }, true);
 
     let results;
     if (process.env.SPEEDTEST_BACKEND_FAST) {
@@ -29,7 +46,7 @@ async function runTest() {
             process.env.SPEEDTEST_SINGLE_MODE
         );
     }
-    sendFields({ testinprogress: "false" });
+    sendFields({ testinprogress: "false" }, true);
 
     console.log("Sending data...")
 

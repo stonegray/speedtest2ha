@@ -57,7 +57,7 @@ export async function speedtest(server, exclude, useSingleMode) {
 
 
 
-    const args = ["--json"];
+    const args = ["--json", "--secure"];
 
     if (useSingleMode) args.push('--single');
 
