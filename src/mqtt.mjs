@@ -55,10 +55,11 @@ export async function sendFields(data, allowsingle) {
 
 		if (data[en.name] == undefined) continue;
 	
-		if (!allowsingle) console.log("Processing sensor", en.name, data[en.name], mqttPath + "/" + en.name);
+		if (!allowsingle) console.log("Processing sensor", en.name, data[en.name], mqttPath + "/" + en.name + " - Sending");
 
         if (!!data[en.name]) {
             await client.publish(mqttPath + "/" + en.name, "" + data[en.name]);
+		if (!allowsingle) console.log("Processing sensor", en.name, data[en.name], mqttPath + "/" + en.name + " - OK");
         } else {
             //console.warn("Backend did not provide the following key, skipping:", en.name);
         }
@@ -69,9 +70,9 @@ export async function sendFields(data, allowsingle) {
 
 export async function connect(){
 
-	console.log(process.env.MQTT_HOST ?? 'mqtt://localhost', options);
+	console.log("Connecting to MQTT server: " + process.env.MQTT_HOST ?? 'mqtt://localhost', options);
+
 	client = mqtt.connect(process.env.MQTT_HOST ?? 'mqtt://localhost', options)
-	console.log(process.env.MQTT_HOST ?? 'mqtt://localhost', options);
 
 	return new Promise((resolveFunc) => {
 		client.on('connect', async function () {

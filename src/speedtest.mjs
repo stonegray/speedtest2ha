@@ -14,7 +14,7 @@ const counters = {
 
 let attempt = 1;
 const t = setInterval(()=>{
-	console.log("Waiting for connection...");
+	console.log("Connecting taking longer than expected...");
 
 	if (attempt++ == 6){
 		console.error("Failed to connect to MQTT after 60 seconds, exiting");
@@ -23,7 +23,6 @@ const t = setInterval(()=>{
 	}
 }, 10000);
 
-console.log("Connecting to MQTT... ");
 await connect();
 
 console.log("Connect OK...");
@@ -53,15 +52,22 @@ async function runTest() {
 
     // Calculate totals:
     if (results.bytes_sent > 1) counters.uploadtotal += results.bytes_sent;
-    if (results.bytes_recieved > 1) counters.downnstream += results.bytes_recieved;
+    if (results.bytes_received > 1) counters.downloadtotal += results.bytes_received;
     counters.total = counters.uploadtotal + counters.downloadtotal;
+	
+	results.downloadtotal = counters.downloadtotal;
+	results.uploadtotal = counters.uploadtotal;
 
     sendFields(results);
 
 }
 
-if (!process.env.NO_TEST_ON_STARTUP)
-    await runTest();
+if (!process.env.NO_TEST_ON_STARTUP){
+	await runTest();
+	console.log( "Initial test finished, waiting for next scheduled test");
+} else {
+	console.log( "Skipping initial test, waiting for next scheduled test");
+}
 
 cron.schedule(process.env.CRON ?? '* */1 * * *', async () => {
     await runTest();
