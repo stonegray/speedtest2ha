@@ -12,7 +12,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: butlerlogic/action-autotag@master
+      - uses: actions/setup-node@v3
+      - run: npm ci
+      - uses: butlerlogic/action-autotag@stable
         if: github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -45,7 +47,7 @@ jobs:
       # https://github.com/docker/setup-qemu-action
       - name: Create a Release
         if: github.ref == 'refs/heads/main'
-        uses: elgohr/Github-Release-Action@v4
+        uses: elgohr/Github-Release-Action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:
