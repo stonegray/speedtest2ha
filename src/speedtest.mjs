@@ -45,6 +45,7 @@ async function runTest() {
             process.env.SPEEDTEST_SINGLE_MODE
         );
     }
+
     sendFields({ testinprogress: "false" }, true);
 
     console.log("Sending data...")
