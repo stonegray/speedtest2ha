@@ -62,6 +62,12 @@ async function runTest() {
 
 }
 
+if (!process.env.NO_TEST_ON_STARTUP){
+	await runTest();
+	console.log( "Initial test finished, waiting for next scheduled test");
+} else {
+	console.log( "Skipping initial test, waiting for next scheduled test");
+}
 
 
 const runSchedule =  process.env.CRON ?? "0 * * * *";
