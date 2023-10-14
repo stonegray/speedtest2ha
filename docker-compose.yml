@@ -2,7 +2,7 @@ services:
   speedtest:
     build:
       dockerfile: Dockerfile
-    container_name: speedtest232i
+    container_name: speedtest2ha
     environment:
       - MQTT_HOST=mqtt://mosquitto
     restart: unless-stopped
