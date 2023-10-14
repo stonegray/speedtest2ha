@@ -26,7 +26,7 @@ function cmd(command, args, opts) {
         let buf = '';
 
         p.stdout.on("data", (x) => buf += x);
-        p.stderr.on("data", (x) => buf += x);
+        p.stderr.on("data", (x) => console.error("speedtest-cli: ", x.toString()));
 
         // We can ignore exit codes, as errors are printed.
         p.on("exit", (code) => {
@@ -57,7 +57,7 @@ export async function speedtest(server, exclude, useSingleMode) {
 
 
 
-    const args = ["--json"];
+    const args = ["--json", "--secure"];
 
     if (useSingleMode) args.push('--single');
 
@@ -77,6 +77,10 @@ export async function speedtest(server, exclude, useSingleMode) {
 
     // Call external speedtest library:
     const r = await cmd('speedtest-cli', args, opts);
+
+    if (process.env.SPEEDTEST_DEBUG == "true"){
+	    console.log("DEBUG::", r);
+    }
 
     // Handle syntax errors nicely:
     if (/^ERROR: .*/.test(r.stdout)) {
@@ -116,7 +120,7 @@ export async function speedtest(server, exclude, useSingleMode) {
         };
     }
 
-    const result = JSON.parse(r.stdout);
+	const result = JSON.parse(r.stdout);
 
     // Temporary hack until I decide where to put this logic:
     result.download = ~~(result.download / 1e4) / 1e2;

@@ -8,10 +8,11 @@ const options = {
     password: process.env.MQTT_PASS,
     clientId: process.env.MQTT_CLIENT_ID,
     protocolVersion: process.env.MQTT_USE_V5 ? 5 : 4
-
 }
 
-const client = mqtt.connect(process.env.MQTT_HOST ?? 'mqtt://localhost', options)
+
+let client;
+
 
 export const announce_template = {
     platform: "mqtt",
@@ -48,34 +49,49 @@ async function sendHaDiscovery() {
     }
 }
 
-export async function sendFields(data) {
+export async function sendFields(data, allowsingle) {
     console.log("Data", data);
     for (const en of entities) {
 
-        console.log("Processing sensor", en.name, data[en.name], mqttPath + "/" + en.name);
+		if (data[en.name] == undefined) continue;
+	
+		if (!allowsingle) console.log("Processing sensor", en.name, data[en.name], mqttPath + "/" + en.name);
+
         if (!!data[en.name]) {
             await client.publish(mqttPath + "/" + en.name, "" + data[en.name]);
         } else {
-            console.warn("Backend did not provide the following key, skipping:", en.name);
+            //console.warn("Backend did not provide the following key, skipping:", en.name);
         }
     }
 
-    console.log("Finished updating sensors");
+    if (!allowsingle) console.log("Finished updating sensors");
 }
 
+export async function connect(){
 
-client.on('connect', async function () {
+	console.log(process.env.MQTT_HOST ?? 'mqtt://localhost', options);
+	client = mqtt.connect(process.env.MQTT_HOST ?? 'mqtt://localhost', options)
+	console.log(process.env.MQTT_HOST ?? 'mqtt://localhost', options);
 
-    console.log('Connected to MQTT');
+	return new Promise((resolveFunc) => {
+		client.on('connect', async function () {
 
-    await sendHaDiscovery();
+			console.log('Connected to MQTT');
 
-    console.log('Sent discovery to MQTT');
-    // Annouce online:
-    await client.publish(announce_template.availability_topic, "online");
+			await sendHaDiscovery();
 
-    setInterval(async () => {
-        await client.publish(announce_template.availability_topic, "online");
-    }, 1e3 * (process.env.AVAILABILITY_UPDATE_RATE ?? 360));
+			console.log('Sent discovery to MQTT');
+			// Annouce online:
+			await client.publish(announce_template.availability_topic, "online");
 
-})
+			setInterval(async () => {
+				await client.publish(announce_template.availability_topic, "online");
+			}, 1e3 * (process.env.AVAILABILITY_UPDATE_RATE ?? 360));
+			resolveFunc();
+
+		})
+
+
+    });
+}
+
