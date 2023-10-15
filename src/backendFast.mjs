@@ -7,7 +7,7 @@ async function getFastToken() {
 
     let token = data.match(/token:"(.{32})"/)[1];
 
-    console.log("Recieved API token: ", token);
+    console.log("Received API token: ", token);
 
     return token;
 }
