@@ -23,6 +23,7 @@ export async function speedtestFast() {
         https: true, // default: true
         urlCount: 5, // default: 5
         bufferSize: 8, // default: 8
+        unit: FastSpeedtest.UNITS.bps, // default: FastSpeedtest.UNITS.Bps
     });
 
     return new Promise((resolveFunc) => {
