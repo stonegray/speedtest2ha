@@ -49,7 +49,7 @@ Settings you probably don't need to change:
 - `AVAILABILITY_UPDATE_RATE`: Number of seconds to wait between availability updates. Default 3600.
 - `NO_TEST_ON_BOOT`: Disable testing on boot and only use the cron scheduled tests. This will show "Unavailable" in home assistant until data updates, but may prevent unexpected timing after updates.
 
-## Running without Dockers
+## Running without Docker
 
 It's strongly recommended to use Docker. To run without, just set the required
 enviroment variables and run `src/speedtest.mjs`:
